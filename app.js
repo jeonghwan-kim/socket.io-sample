@@ -8,16 +8,20 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+
 io.on('connection', function(socket){
   console.log('a user connected');
+
+  io.emit('new user connected', socket.id);
 
   socket.on('chat message', function (msg) {
     console.log('message: ' + msg);
     io.emit('chat message', msg);
   });
 
-  socket.on('disconnect', function(){
+  socket.on('disconnect', function(foo){
     console.log('user disconnected');
+    io.emit('a user removed')
   });
 });
 
